@@ -34,31 +34,68 @@ class Order(db.Model):
 with app.app_context():
     db.create_all()
 
-
+# API to handle Customers
 class CustomerAPI(Resource):
     def get(self):
         customers = Customer.query.all()
-        return jsonify([{'id': customer.id, 'name': customer.name, 'code': customer.code} for customer in customers])
+        return jsonify(
+            [
+                {
+                    'id': customer.id, 
+                    'name': customer.name, 
+                    'code': customer.code
+                } 
+                for customer in customers
+            ]
+        )
 
     def post(self):
         data = request.json
         new_customer = Customer(name=data['name'], code=data['code'])
         db.session.add(new_customer)
         db.session.commit()
-        return jsonify({'message': 'Customer added successfully!', 'customer': {'name': new_customer.name, 'code': new_customer.code}})
+        return jsonify(
+            {
+                'message': 'Customer added successfully!', 
+                'customer': {
+                    'name': new_customer.name, 
+                    'code': new_customer.code
+                    }
+            }
+        )
 
-
+# API to handle Orders
 class OrderAPI(Resource):
     def get(self):
         orders = Order.query.all()
-        return jsonify([{'id': order.id, 'item': order.item, 'amount': order.amount, 'time': order.time, 'customer_id': order.customer_id} for order in orders])
+        return jsonify(
+            [
+                {
+                    'id': order.id, 
+                    'item': order.item, 
+                    'amount': order.amount, 
+                    'time': order.time, 
+                    'customer_id': order.customer_id
+                } 
+                for order in orders
+            ]
+        )
 
     def post(self):
         data = request.json
         new_order = Order(item=data['item'], amount=data['amount'], customer_id=data['customer_id'])
         db.session.add(new_order)
         db.session.commit()
-        return jsonify({'message': 'Order added successfully!', 'order': {'item': new_order.item, 'amount': new_order.amount, 'time': new_order.time}})
+        return jsonify(
+            {
+                'message': 'Order added successfully!', 
+                'order': {
+                    'item': new_order.item, 
+                    'amount': new_order.amount, 
+                    'time': new_order.time
+                    }
+            }
+        )
 
 
 api.add_resource(CustomerAPI, '/customers')
