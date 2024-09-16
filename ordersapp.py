@@ -5,6 +5,7 @@ from flask_restful import Api, Resource
 from datetime import datetime
 import os
 import uuid
+import africastalking
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -14,6 +15,12 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 api = Api(app)
+
+# Africa's Talking Configuration
+africas_talking_username = 'sandbox'  
+africas_talking_api_key = 'atsk_c81ae0dd7543bfddafede8633f0f25bce0a5fe99ae29b752d788e3b41be97a4319ccdf37' 
+africas_talking = africastalking.initialize(africas_talking_username, africas_talking_api_key)
+sms = africastalking.SMS
 
 # Configure OAuth for OpenID Connect
 oauth = OAuth(app)
@@ -35,6 +42,7 @@ class Customer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     code = db.Column(db.String(20), unique=True, nullable=False)
+    phone_number = db.Column(db.String(20), nullable=False)
 
     def __repr__(self):
         return f"<Customer {self.name}>"
@@ -53,6 +61,15 @@ class Order(db.Model):
 
 with app.app_context():
     db.create_all()
+
+# Function to send SMS using Africa's Talking
+def send_sms(phone_number, message):
+    try:
+        response = sms.send(message, [phone_number])
+        print(response)
+    except Exception as e:
+        print(f"Error sending SMS: {e}")
+
 
 # Authentication and Authorization
 
@@ -123,7 +140,8 @@ class CustomerAPI(Resource):
                 {
                     'id': customer.id, 
                     'name': customer.name, 
-                    'code': customer.code
+                    'code': customer.code,
+                    'phone_number': customer.phone_number
                 } 
                 for customer in customers
             ]
@@ -132,7 +150,10 @@ class CustomerAPI(Resource):
     #@login_required
     def post(self):
         data = request.json
-        new_customer = Customer(name=data['name'], code=data['code'])
+        new_customer = Customer(
+            name=data['name'], 
+            code=data['code'],
+            phone_number=data['phone_number'] )
         db.session.add(new_customer)
         db.session.commit()
         return jsonify(
@@ -140,7 +161,8 @@ class CustomerAPI(Resource):
                 'message': 'Customer added successfully!', 
                 'customer': {
                     'name': new_customer.name, 
-                    'code': new_customer.code
+                    'code': new_customer.code,
+                    'phone_number': new_customer.phone_number
                     }
             }
         )
@@ -169,6 +191,14 @@ class OrderAPI(Resource):
         new_order = Order(item=data['item'], amount=data['amount'], customer_id=data['customer_id'])
         db.session.add(new_order)
         db.session.commit()
+
+        # Fetch the customer's phone number to send the SMS
+        customer = Customer.query.get(new_order.customer_id)
+        if customer:
+            message = f"Dear {customer.name}, your order for {new_order.item} has been received."
+            send_sms(customer.phone_number, message)
+
+
         return jsonify(
             {
                 'message': 'Order added successfully!', 
@@ -179,6 +209,7 @@ class OrderAPI(Resource):
                     }
             }
         )
+
 
 
 api.add_resource(CustomerAPI, '/customers')
