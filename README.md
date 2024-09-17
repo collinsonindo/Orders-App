@@ -1,5 +1,5 @@
 # Orders-App
-This is a simple customer and order management service created written in Python + Flask. The service has a database where data about customers and orders is uploaded using REST API.  When an order is uploaded, the customer receives an SMS alerting them.
+This is a simple customer and order management service written in Python + Flask. The service has a database where data about customers and orders is uploaded using REST API.  When an order is uploaded, the customer receives an SMS alerting them.
 
 ## Libraries Used
 - [Flask](http://flask.pocoo.org/).
