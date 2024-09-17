@@ -10,9 +10,9 @@ import africastalking
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
+#Configure & Initialize SQLITE DB 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 db = SQLAlchemy(app)
 api = Api(app)
 
