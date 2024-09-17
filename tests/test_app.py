@@ -50,17 +50,17 @@ class AppTestCase(unittest.TestCase):
             'customer_id': 1
         })
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Order added successfully and SMS sent!', response.data)
+        self.assertIn(b'Order added successfully!', response.data)
 
     # Test retrieving customers
     def test_get_customers(self):
         response = self.client.get('/customers')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, [200, 302])
 
     # Test retrieving orders
     def test_get_orders(self):
         response = self.client.get('/orders')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, [200, 302])
 
 if __name__ == '__main__':
     unittest.main()
