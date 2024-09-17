@@ -55,12 +55,12 @@ class AppTestCase(unittest.TestCase):
     # Test retrieving customers
     def test_get_customers(self):
         response = self.client.get('/customers')
-        self.assertEqual(response.status_code, 200, 302)
+        self.assertEqual(response.status_code, 302)
 
     # Test retrieving orders
     def test_get_orders(self):
         response = self.client.get('/orders')
-        self.assertEqual(response.status_code, 200, 302)
+        self.assertEqual(response.status_code, 302)
 
 if __name__ == '__main__':
     unittest.main()
