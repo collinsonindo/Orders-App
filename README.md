@@ -84,7 +84,7 @@ The POST API does not require user authentication.
 
 ### Database
 The POST customer and POST order saves data to a SQLITE database.
-The Database contains 2 tables: Order table and Customer table
+The Database contains 2 tables: Order table and Customer table.
 The `customer_id` sets a relationship between the customer table and orders table
 
 ### Authentication
