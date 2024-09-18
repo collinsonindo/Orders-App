@@ -84,16 +84,16 @@ The POST API does not require user authentication.
 
 The POST customer and POST order saves data to a SQLITE database.
 
-###Authentication
+### Authentication
 The application uses OpenID Connect for authentication, allowing users to log in with their Google accounts. Set up the Google OAuth 2.0 credentials in the Google Cloud Platform and configure the GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET environment variables.
 
-###Testing
+### Testing
 Unit tests are provided to ensure the application works as expected. To run the tests, use:
 
 bash
 `pytest --cov=ordersapp`
 
-###Continuous Integration and Deployment
+### Continuous Integration and Deployment
 This project uses GitHub Actions for CI/CD. The workflow is defined in .github/workflows/cicd.yml. It performs the following tasks:
 
 - Install dependencies
