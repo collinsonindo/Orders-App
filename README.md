@@ -70,7 +70,7 @@ GET orders: Retrieve a list of all orders.
 `http://127.0.0.1:5000/orders`
 The GET API works after user authentication.
 
-POST orderss: Add a new order.
+POST orders: Add a new order.
 `http://127.0.0.1:5000/orders`
 Payload
 ```
@@ -82,7 +82,10 @@ Payload
 ```
 The POST API does not require user authentication.
 
+### Database
 The POST customer and POST order saves data to a SQLITE database.
+The Database contains 2 tables: Order table and Customer table
+The `customer_id` sets a relationship between the customer table and orders table
 
 ### Authentication
 The application uses OpenID Connect for authentication, allowing users to log in with their Google accounts. Set up the Google OAuth 2.0 credentials in the Google Cloud Platform and configure the GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET environment variables.
