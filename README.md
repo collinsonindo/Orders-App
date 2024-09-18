@@ -21,7 +21,7 @@ The version used for each library is listed on [requirements.txt](https://github
 - SMS Notifications: Send SMS alerts to customers using Africa's Talking SMS gateway.
 - Authentication: Supports login via OpenID Connect (Google).
 - RESTful API: Expose endpoints for managing customers and orders.
-- Unit Testing: Comprehensive test coverage with CI/CD integration using Github workflow.
+- Unit Testing: Comprehensive test coverage with CI/CD integration using Github Actions.
 
 ## Prerequisites
 - Python 3.8+
@@ -48,7 +48,7 @@ Run the Orders App
 The application will be available at http://127.0.0.1:5000.
 
 ### API Endpoints
-###Customers
+### Customers
 GET customers: Retrieve a list of all customers.
 `http://127.0.0.1:5000/customers`
 The GET API works after user authentication.
@@ -65,7 +65,37 @@ Payload
 ```
 Does not require user authentication.
 
+### Orders
+GET orders: Retrieve a list of all orders.
+`http://127.0.0.1:5000/orders`
+The GET API works after user authentication.
 
+POST orderss: Add a new order.
+`http://127.0.0.1:5000/orders`
+Payload
+```
+{
+  "item": "Item Name",
+  "amount": 100,
+  "customer_id": 1
+}
+```
+The POST API does not require user authentication.
 
+The POST customer and POST order saves data to a SQLITE database.
 
-Payload:
+###Authentication
+The application uses OpenID Connect for authentication, allowing users to log in with their Google accounts. Set up the Google OAuth 2.0 credentials in the Google Cloud Platform and configure the GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET environment variables.
+
+###Testing
+Unit tests are provided to ensure the application works as expected. To run the tests, use:
+
+bash
+`pytest --cov=ordersapp`
+
+###Continuous Integration and Deployment
+This project uses GitHub Actions for CI/CD. The workflow is defined in .github/workflows/cicd.yml. It performs the following tasks:
+
+- Install dependencies
+- Run tests with coverage
+- Analyze the code for errors
