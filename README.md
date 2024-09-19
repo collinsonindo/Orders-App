@@ -97,7 +97,7 @@ bash
 `pytest --cov=ordersapp`
 
 ### Continuous Integration and Deployment
-This project uses GitHub Actions for CI/CD. The workflow is defined in .github/workflows/cicd.yml. It performs the following tasks:
+This project uses GitHub Actions for CI/CD. The workflow is defined in [.github/workflows/cicd.yml](https://github.com/collinsonindo/Orders-App/blob/main/.github/workflows/cicd.yml). It performs the following tasks:
 
 - Install dependencies
 - Run tests with coverage
